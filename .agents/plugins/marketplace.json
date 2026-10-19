@@ -1,0 +1,22 @@
+{
+  "name": "ai-development-sop-marketplace",
+  "interface": {
+    "displayName": "AI 开发 SOP"
+  },
+  "plugins": [
+    {
+      "name": "ai-development-sop",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/usertianziyang/ai-development-sop.git",
+        "path": "./plugins/ai-development-sop",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

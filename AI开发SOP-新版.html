@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 开发标准流程 SOP · 小白基础 + Skill 驱动版</title>
+<style>
+  :root{
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --ink:#1c1f23;
+    --ink-2:#3d444d;
+    --muted:#6b7280;
+    --line:#e5e1d8;
+    --accent:#2f5bd7;
+    --accent-soft:#eef2fd;
+    --amber:#b45309;
+    --amber-soft:#fdf6ea;
+    --green:#15803d;
+    --green-soft:#eef7f0;
+    --red:#b91c1c;
+    --red-soft:#fdf0f0;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:16px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 28px 120px;}
+
+  /* ---------- 封面 ---------- */
+  header.cover{
+    background:#151a21;
+    color:#f4f1ea;
+    padding:64px 0 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.cover::after{
+    content:"";
+    position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(47,91,215,.55),transparent 65%);
+  }
+  header.cover .wrap{padding-bottom:0;position:relative;z-index:2;}
+  .eyebrow{
+    display:inline-block;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:#9fb4e8;border:1px solid rgba(159,180,232,.35);
+    padding:5px 12px;border-radius:999px;margin-bottom:22px;
+  }
+  h1{font-size:42px;line-height:1.25;margin:0 0 16px;letter-spacing:-.5px;font-weight:800;}
+  h1 span{color:#9fb4e8;}
+  .lede{font-size:17px;color:#b9c2cf;max-width:640px;margin:0;}
+  .meta{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:#8e9aa9;}
+  .meta em{font-style:normal;background:rgba(255,255,255,.07);padding:4px 10px;border-radius:6px;}
+
+  /* ---------- 通用排版 ---------- */
+  section{margin-top:64px;}
+  h2{
+    font-size:27px;line-height:1.4;margin:0 0 8px;letter-spacing:-.3px;
+    display:flex;align-items:center;gap:12px;
+  }
+  h2 .num{
+    flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--ink);color:#fff;
+    font-size:17px;display:flex;align-items:center;justify-content:center;font-weight:700;
+  }
+  h3{font-size:19px;margin:34px 0 10px;letter-spacing:-.2px;}
+  p{margin:10px 0;}
+  strong{font-weight:700;}
+  a{color:var(--accent);}
+  ul,ol{padding-left:22px;margin:10px 0;}
+  li{margin:6px 0;}
+  .kicker{font-size:13px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;}
+  .sub{color:var(--muted);font-size:15px;margin:0 0 18px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 28px;margin:18px 0;
+  }
+  .hr{height:1px;background:var(--line);margin:56px 0;border:0;}
+
+  /* ---------- 目录 ---------- */
+  .toc{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 26px;margin-top:40px;
+  }
+  .toc ol{columns:2;column-gap:34px;margin:8px 0 0;padding-left:20px;font-size:15px;}
+  .toc li{break-inside:avoid;margin:7px 0;}
+  .toc a{text-decoration:none;color:var(--ink-2);}
+  .toc a:hover{color:var(--accent);}
+
+  /* ---------- 提示块 ---------- */
+  .callout{
+    border-left:3px solid var(--accent);background:var(--accent-soft);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:18px 0;font-size:15.5px;
+  }
+  .callout.warn{border-color:var(--amber);background:var(--amber-soft);}
+  .callout.tip{border-color:var(--green);background:var(--green-soft);}
+  .callout.danger{border-color:var(--red);background:var(--red-soft);}
+  .callout .tag{
+    display:block;font-size:12px;font-weight:700;letter-spacing:.1em;
+    color:var(--accent);margin-bottom:4px;text-transform:uppercase;
+  }
+  .callout.warn .tag{color:var(--amber);}
+  .callout.tip .tag{color:var(--green);}
+  .callout.danger .tag{color:var(--red);}
+
+  /* ---------- 流程条 ---------- */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:24px 0 8px;}
+  .flow .node{
+    flex:1 1 128px;background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:12px 12px;font-size:13.5px;line-height:1.5;position:relative;
+  }
+  .flow .node b{display:block;font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:2px;}
+  .flow .node.loop{border-color:var(--amber);background:var(--amber-soft);}
+  .flow .node.loop b{color:var(--amber);}
+
+  /* ---------- 提示词块 ---------- */
+  .prompt{
+    position:relative;background:#22262c;border-radius:12px;margin:16px 0;
+    border:1px solid #2f353d;overflow:hidden;
+  }
+  .prompt .bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:9px 14px;background:#1b1f24;border-bottom:1px solid #2f353d;
+  }
+  .prompt .bar span{font-size:12px;color:#96a0ad;letter-spacing:.06em;}
+  .prompt button{
+    background:#31373f;color:#dfe5ec;border:0;border-radius:6px;
+    font-size:12px;padding:4px 12px;cursor:pointer;font-family:inherit;
+  }
+  .prompt button:hover{background:#3d454f;}
+  .prompt pre{
+    margin:0;padding:16px 18px 18px;color:#e3e8ee;font-size:13.5px;line-height:1.75;
+    white-space:pre-wrap;word-break:break-word;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,"PingFang SC",monospace;
+  }
+
+  /* ---------- 表格 ---------- */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;}
+  th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top;}
+  th{background:#f3f0e9;font-weight:700;font-size:13.5px;color:var(--ink-2);}
+  td code, p code, li code{
+    background:#efece5;border-radius:4px;padding:1px 6px;font-size:13px;
+    font-family:"SF Mono",Menlo,Consolas,monospace;color:#7a4b12;
+  }
+
+  /* ---------- 目录树 ---------- */
+  .tree{
+    background:#22262c;color:#cfd6de;border-radius:12px;padding:18px 20px;
+    font-family:"SF Mono",Menlo,Consolas,monospace;font-size:13.5px;line-height:1.85;
+    white-space:pre;overflow-x:auto;
+  }
+  .tree .c{color:#7f8a97;}
+
+  /* ---------- 清单 ---------- */
+  .check{list-style:none;padding-left:0;}
+  .check li{padding-left:30px;position:relative;}
+  .check li::before{
+    content:"☐";position:absolute;left:4px;top:0;color:var(--accent);font-size:16px;
+  }
+
+  /* ---------- 失败模式 ---------- */
+  .fail{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0;}
+  .fail .item{
+    background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);
+    border-radius:0 10px 10px 0;padding:14px 18px;
+  }
+  .fail .item b{display:block;margin-bottom:2px;}
+  .fail .item span{color:var(--muted);font-size:14.5px;}
+
+  footer{
+    margin-top:80px;padding-top:24px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:13.5px;
+  }
+
+  @media (max-width:640px){
+    h1{font-size:30px;}
+    .wrap{padding:0 18px 80px;}
+    h2{font-size:22px;}
+    .toc ol{columns:1;}
+    header.cover{padding:44px 0 38px;}
+  }
+  @media print{
+    body{background:#fff;font-size:12pt;}
+    header.cover{background:#fff;color:#000;padding:0 0 20px;}
+    header.cover::after{display:none;}
+    h1 span{color:#000;}
+    .lede,.meta{color:#333;}
+    .prompt{background:#f5f5f5;border:1px solid #ddd;}
+    .prompt .bar{display:none;}
+    .prompt pre{color:#111;}
+    .tree{background:#f5f5f5;color:#111;}
+    section{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <span class="eyebrow">Standard Operating Procedure</span>
+    <h1>AI 开发标准流程 <span>SOP</span></h1>
+    <p class="lede">给 Codex / CodeBuddy 小白用户的一套固定动作：<br>
+    从一句话想法，到能跑起来、能改得动、能一直加功能的小项目。</p>
+    <div class="meta">
+      <em>适用人群：零基础 / 非科班</em>
+      <em>工具：Codex · CodeBuddy</em>
+      <em>小白基础 + Skill 驱动路由</em>
+      <em>从开工到验收的完整闭环</em>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="toc">
+    <div class="kicker">目录</div>
+    <ol>
+      <li><a href="#why">先看懂三件事</a></li>
+      <li><a href="#step0">第 0 步 · 开工前准备</a></li>
+      <li><a href="#step1">第 1 步 · 建项目文件夹</a></li>
+      <li><a href="#gate">关卡 · 先判断这套 SOP 适不适合</a></li>
+      <li><a href="#step2">第 2 步 · 定规则，写 AGENTS.md</a></li>
+      <li><a href="#step3">第 3 步 · Plan 模式做计划再开发</a></li>
+      <li><a href="#step4">第 4 步 · 自己动手测一遍</a></li>
+      <li><a href="#step5">第 5 步 · 修 Bug 的追问法</a></li>
+      <li><a href="#step6">第 6 步 · 加新功能（回到第 3 步）</a></li>
+      <li><a href="#scripts">话术库（直接复制）</a></li>
+      <li><a href="#fail">八个新手必踩的坑</a></li>
+      <li><a href="#check">交付前自查清单</a></li>
+      <li><a href="#appendix">附录 · AGENTS.md 模板</a></li>
+      <li><a href="#skill-layer">Skill 驱动工作层</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ 为什么 ============ -->
+  <section id="why">
+    <div class="kicker">Before you start</div>
+    <h2>先看懂四件事，后面就不会乱</h2>
+    <p class="sub">这套流程不是仪式感，它解决的是 AI 开发最容易失控的三个问题。</p>
+
+    <div class="card">
+      <h3 style="margin-top:0">1. AI 没有记忆，只有「读到的文件」</h3>
+      <p>每开一个新对话窗口，AI 对你的项目一无所知。它不会记得昨天说好的技术栈，也不会记得你讨厌什么写法。
+      所以你必须把「约定」写成文件放进项目里 —— 这就是 <code>AGENTS.md</code> 存在的意义。它不是给 AI 看的说明书，是给 AI 的<b>工作合同</b>。</p>
+
+      <h3>2. 一个窗口只干一件事</h3>
+      <p>对话越长，AI 越容易忘记开头说过什么、越容易前后矛盾。所以：一个新任务 = 一个新窗口。
+      这也是为什么第 5、6 步都要求「新开窗口」—— 不是重来，是给它一个干净的脑子，再喂给它需要的文件。</p>
+
+      <h3>3. 你必须有一份能回退的版本</h3>
+      <p>AI 改代码是「整段覆盖」，改坏了不一定能还原。第 0 步会教你花 1 分钟打开 Git，这样任何时候都能退回上一个能跑的版本。这是小白最重要的保险。</p>
+
+      <h3>4. 这套流程是默认值，不是标准答案</h3>
+      <p>做 80 行的脚本和做要上线的系统，不该走一样的路。所以正式开工前有一道 <b>GATE</b>：
+      把你的项目情况和这套 SOP 一起交给 AI，让它评判哪一步该加强、哪一步该砍掉。
+      <b>流程要跟着项目走，不是项目迁就流程。</b></p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">一句话记住</span>
+      <b>流程体检管适配，文件夹管秩序，AGENTS.md 管规则，Plan 模式管节奏，新窗口管专注。</b>
+    </div>
+    <div class="callout tip">
+      <span class="tag">阅读顺序</span>
+      先按前面的 0～6 步把项目稳稳推进；遇到“下一步做什么、该找哪个能力、是否真的完成”时，再看文末的 <b>Skill 驱动工作层</b>。它是路由和验收补充，不会替代前面的基础流程。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第0步 ============ -->
+  <section id="step0">
+    <div class="kicker">Step 0</div>
+    <h2><span class="num">0</span>开工前准备（十分钟，只做一次）</h2>
+    <p class="sub">后面的六步能不能顺，取决于这十分钟有没有做。</p>
+
+    <h3>0.1 选一个你找得到的「代码总目录」</h3>
+    <p>在用户目录下建一个固定位置，比如 <code>~/Projects</code>。以后所有项目都放这里，
+    不要在桌面、下载文件夹里随手建 —— 桌面文件多了之后，你和 AI 都会找不到东西。</p>
+
+    <div class="callout warn">
+      <span class="tag">路径规则</span>
+      文件夹名用<b>英文 + 短横线</b>，不要有空格和中文，例如 <code>family-ledger</code>。
+      带空格或中文的路径会让命令行工具频繁报错，这是新手第一大坑。
+    </div>
+
+    <h3>0.2 打开 Git（一次性，之后每步都用得上）</h3>
+    <p>在项目文件夹里让 AI 帮你执行一次即可，不需要学命令：</p>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI</span><button>复制</button></div>
+      <pre>请帮我初始化 Git 版本管理，并做第一次提交：
+1. 如果没有 .gitignore，创建一个适合本项目的
+2. git init，提交信息写 "chore: 初始化项目"
+3. 之后每完成一个功能，都提醒我做一次提交
+
+我是新手，请把每一步在做什么用一句话解释给我。</pre>
+    </div>
+    <p>为什么重要：第 5 步修 Bug 时，AI 有可能改得越来越糟。有 Git，你随时能说一句
+    <b>「回到上一个能运行的版本」</b>，一切归零重来，成本几乎为零。</p>
+
+    <h3>0.3 认清你手里的两个工具</h3>
+    <p>Codex 和 CodeBuddy 是同一类东西：<b>能读写你电脑上项目文件的 AI 助手</b>。叫法不同，用法一致。</p>
+    <table>
+      <tr><th style="width:38%">你要做的事</th><th>在 CodeBuddy 里</th><th>在 Codex 里</th></tr>
+      <tr><td>提出需求、看它回答</td><td>对话框</td><td>对话框 / 终端会话</td></tr>
+      <tr><td>让它先想清楚再动手</td><td>计划模式（Plan）</td><td>计划 / 审批模式</td></tr>
+      <tr><td>给它定长期规则</td><td>项目根目录 <code>AGENTS.md</code></td><td>项目根目录 <code>AGENTS.md</code></td></tr>
+      <tr><td>让它跑起来给你看</td><td>让它启动本地服务</td><td>让它启动本地服务</td></tr>
+      <tr><td>控制它别乱改</td><td>权限 / 审批设置</td><td>审批设置</td></tr>
+    </table>
+    <div class="callout tip">
+      <span class="tag">建议</span>
+      两个工具可以同时用，但<b>同一个项目、同一个任务，用一个就好</b>。两边同时改同一个文件，会互相覆盖。
+      常见分工：CodeBuddy 做界面和交互类项目，Codex 做脚本和命令行类任务。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第1步 ============ -->
+  <section id="step1">
+    <div class="kicker">Step 1</div>
+    <h2><span class="num">1</span>一个项目，一个文件夹</h2>
+    <p class="sub">这是整套流程的地基。地基歪了，后面每一步都在还债。</p>
+
+    <p><b>为什么要建文件夹？</b>三个具体的好处，不是空话：</p>
+    <ul>
+      <li><b>文件可寻。</b>AI 生成的所有代码、文档、截图都在一个目录里。你打开就能看到它做了什么，而不是散落在下载文件夹的 20 个 <code>index(1).html</code> 里。</li>
+      <li><b>记忆不乱。</b>AI 在项目目录里工作，能自动读到 <code>AGENTS.md</code> 和文档。换个目录，它就是个失忆的陌生 AI。</li>
+      <li><b>可以多开窗口。</b>两个窗口同时改不同项目，互不干扰。反过来，两个窗口改同一个项目的同一个文件，必然冲突。</li>
+    </ul>
+
+    <h3>标准目录长这样</h3>
+    <div class="tree">family-ledger/            <span class="c"># 项目名，英文短横线</span>
+├── AGENTS.md             <span class="c"># AI 每次开工必读的规则文件</span>
+├── docs/
+│   ├── 流程适配.md        <span class="c"># 这套 SOP 为这个项目怎么调过</span>
+│   ├── 需求.md           <span class="c"># 做什么、给谁用、不做什么</span>
+│   ├── 技术方案.md        <span class="c"># 技术栈、目录结构、数据存哪</span>
+│   ├── 开发计划.md        <span class="c"># 拆好的任务清单和进度</span>
+│   └── 问题记录.md        <span class="c"># 修过的 bug、踩过的坑</span>
+├── src/                  <span class="c"># 代码（AI 会自己建）</span>
+├── .gitignore
+└── README.md             <span class="c"># 怎么启动这个项目</span></div>
+
+    <div class="callout">
+      <span class="tag">关键习惯</span>
+      <code>docs/</code> 这个文件夹是整套 SOP 的核心资产。它让「AI 的记忆」从对话记录里，
+      转移到你能随时打开、随时发给任何 AI 的文件里。<b>对话会丢，文件不会。</b>
+    </div>
+
+    <h3>开工话术</h3>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 新项目第一句</span><button>复制</button></div>
+      <pre>我要开始一个新项目，请你先帮我搭好项目骨架，不要写业务代码。
+
+项目名称：family-ledger
+项目位置：/Users/你的用户名/Projects/family-ledger（如果不存在请创建）
+
+请创建：
+- docs/ 文件夹（先留空）
+- .gitignore
+- 一个最简的 README.md，写清楚项目是干什么的、以后怎么启动
+
+完成之后，告诉我现在目录里有什么。</pre>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 流程关卡 ============ -->
+  <section id="gate">
+    <div class="kicker">Gate · Before you write anything</div>
+    <h2><span class="num" style="width:auto;padding:0 13px;font-size:12px;letter-spacing:.1em;background:var(--amber)">GATE</span>先让 AI 判断：这套 SOP 适不适合你这个项目</h2>
+    <p class="sub">同一套流程，做 30 行的脚本和做带登录的多人系统，不该走一样的路。</p>
+
+    <p>前面六步是<b>通用流程</b>，不是万能流程。真正开工前，你必须多做一件事：
+    <b>把项目和这套 SOP 一起交给 AI，让它评判哪里该加强、哪里该砍掉、哪里顺序不对。</b>
+    否则你会遇到两种典型浪费 ——</p>
+
+    <div class="callout warn">
+      <span class="tag">两种典型浪费</span>
+      <b>流程过重：</b>花一整个下午写需求文档、技术方案、开发计划，结果代码只有 80 行，第二天就扔了。<br>
+      <b>流程过轻：</b>一个要上线、要存用户数据的项目，你按「随手做个页面」的节奏推进，做到一半发现架构撑不住，全部重写。
+    </div>
+
+    <div class="callout">
+      <span class="tag">为什么必须主动问</span>
+      AI 默认服从你的指令。你不问「这套流程合适吗」，它不会主动说 —— 它会老老实实陪你走完一套不适合你的流程，
+      还会在每一步都告诉你「很好，继续」。<b>评判这件事，只能由你发起。</b>
+    </div>
+
+    <h3>它在这一步的位置</h3>
+    <div class="flow">
+      <div class="node"><b>1</b>建文件夹</div>
+      <div class="node loop"><b>GATE</b>流程体检</div>
+      <div class="node"><b>2</b>定规则</div>
+      <div class="node"><b>3</b>计划开发</div>
+      <div class="node"><b>4</b>自测</div>
+      <div class="node"><b>5</b>修问题</div>
+      <div class="node"><b>6</b>加功能</div>
+    </div>
+    <p style="font-size:14.5px;color:var(--muted)">放在这里的原因：文件夹已经建好，体检报告有地方落盘；但需求文档还没开始写，流程要加要减，成本都最低。</p>
+
+    <h3>AI 要从三个维度评判</h3>
+    <table>
+      <tr><th style="width:22%">维度</th><th>要问清楚的事</th><th style="width:30%">影响哪些步骤</th></tr>
+      <tr><td><b>项目类型</b></td><td>一次性脚本 / 单页工具 / 带数据存储的小应用 / 多人协作 / 要上线对外</td><td>决定要不要写技术方案、要不要加部署环节</td></tr>
+      <tr><td><b>复杂度</b></td><td>几个页面、几个核心功能、要不要登录、数据量多大、要不要对接外部服务</td><td>决定任务拆多细、要不要加数据模型评审</td></tr>
+      <tr><td><b>风险与你的熟悉度</b></td><td>涉不涉及钱和个人隐私、坏了谁受影响、你对这个技术栈懂多少</td><td>决定测试要做多严、要不要加人工复核</td></tr>
+    </table>
+
+    <h3>四种可能的结论，对应四种走法</h3>
+    <table>
+      <tr><th style="width:16%">结论</th><th style="width:34%">典型项目</th><th>流程怎么调</th></tr>
+      <tr><td><b>A · 轻量</b></td><td>单页展示、小脚本、一次性工具、验证想法的 demo</td><td>合并第 2、3 步：口头说清需求直接进计划；<b>不写</b>技术方案.md；测试清单口头确认即可</td></tr>
+      <tr><td><b>B · 常规</b></td><td>带数据存取的小应用、自己用的内部工具</td><td><b>原样执行</b>六步，不增不减</td></tr>
+      <tr><td><b>C · 复杂</b></td><td>多角色、要登录、要对接外部 API、要部署给别人用</td><td>第 3 步前加「数据模型 + 接口约定」评审；第 4 步加「异常与并发」测试；末尾加「部署上线」环节</td></tr>
+      <tr><td><b>D · 不该在这里做</b></td><td>涉及真实支付、医疗金融合规、需要硬件、需要长期运维</td><td>明确告诉你停手：先做原型验证，或换方案、找专业的人。<b>这时候的「不做」是最有价值的结论</b></td></tr>
+    </table>
+
+    <h3>体检话术（新窗口，第一句）</h3>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · SOP 适配体检</span><button>复制</button></div>
+      <pre>我准备用一套固定的开发流程做下面这个项目。
+请你先评判这套流程适不适合，再决定要不要照着执行 —— 不要默认它是对的。
+
+【我的项目】
+一句话说明：做一个家庭记账小工具
+类型：带数据存储的单页应用，只在电脑浏览器上用，不对外发布
+规模：大概 3 个页面、4 个核心功能
+技术：我不懂编程，希望用最简单、依赖最少的方式
+时间：我想在两个周末内做完
+
+【我准备用的流程】
+1. 建项目文件夹，一个项目一个目录
+2. 跟你多轮对话把需求问清楚，写成 docs/需求.md 和 docs/技术方案.md
+3. 生成 AGENTS.md，定下你在这个项目里的工作规则
+4. 进 Plan 模式拆任务，再按计划开发
+5. 本地启动，我自己在浏览器里手动测一遍
+6. 出问题就新开窗口，描述现象，追问原因再修
+7. 加新功能时回到第 4 步
+
+【请输出】
+1. 项目画像：复杂度（轻量/常规/复杂）、主要风险、最容易返工的地方
+2. 逐条评判这 7 步：保留 / 加强 / 可以简化 / 应该新增，每步一句话理由
+3. 必须指出至少 1 处该删的和 1 处该加的，不要只说「都很好」
+4. 给出调整后的定制流程：按顺序列，标明每步产出哪个文件
+5. 这个项目有没有「不该用这套流程硬做」的地方？有就直说，不要委婉
+
+结果写到 docs/流程适配.md，写完在这里贴一份给我。</pre>
+    </div>
+
+    <div class="callout tip">
+      <span class="tag">关键：评判 AI 的评判</span>
+      如果它给你的结论是「这套流程很完整，建议按此执行」，说明它没认真评。追加一句：<br><br>
+      <b>「你刚才太客气了。请具体回答：如果我只有两天，哪几步可以砍掉、砍掉的代价是什么？哪一步在我这个项目里最容易走形式、白花时间？我这套流程有没有顺序错了的地方？」</b>
+    </div>
+
+    <h3>体检报告应该长什么样</h3>
+    <div class="card">
+      <p><b>① 项目画像</b> —— 一句话说清这是个什么量级的项目，最怕什么。</p>
+      <p><b>② 逐条判决</b> —— 七步各给一个结论和理由，你能看到它到底动了哪里。</p>
+      <p><b>③ 定制流程</b> —— 一份改过的步骤清单，每步写清「做什么 + 产出什么文件」。这份清单从此取代通用 SOP，贴在 <code>docs/流程适配.md</code>。</p>
+      <p style="margin-bottom:0"><b>④ 风险预警</b> —— 哪些地方它认为你会卡住，以及卡住时该找谁、该停在哪。</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="tag">看到这些信号，说明体检没过</span>
+      · 它把七步原样抄了一遍，只换了措辞<br>
+      · 它没提任何风险，也没提任何「你可能不需要」<br>
+      · 它给你的流程比通用版更长，但说不出多出来的步骤解决什么问题<br><br>
+      出现任意一条，换一个窗口重问，或换一个工具再评一次。<b>两份结论对照着看，差异本身就是信息。</b>
+    </div>
+
+    <h3>什么时候要重新体检一次</h3>
+    <ul>
+      <li>项目从 1 个页面长到 5 个页面，或者从「自己能跑」变成「要给别人用」</li>
+      <li>开始接数据库、登录、外部 API、支付 —— 每加一类，风险等级就跳一档</li>
+      <li>连续两个功能都做得很痛苦，反复返工（多半是流程缺了某一步）</li>
+      <li>换了工具（Codex ↔ CodeBuddy），或换了对话窗口后它总理解错</li>
+    </ul>
+
+    <div class="callout">
+      <span class="tag">一句话</span>
+      通用 SOP 是<b>默认值</b>，不是<b>标准答案</b>。每开一个新项目，花十分钟让 AI 帮你把它改成「这个项目专用版」，
+      省下的是后面十几小时的返工。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第2步 ============ -->
+  <section id="step2">
+    <div class="kicker">Step 2</div>
+    <h2><span class="num">2</span>用对话把需求问清楚，再写成 AGENTS.md</h2>
+    <p class="sub">这一步决定项目成败。多数人失败不是因为 AI 不会写代码，是因为需求没想清楚就让它动手。</p>
+
+    <div class="callout">
+      <span class="tag">先看体检结论</span>
+      如果上一关的结论是 <b>A · 轻量</b>，这一关只需要 <code>docs/需求.md</code>，
+      <b>跳过技术方案.md</b>；如果是 <b>C · 复杂</b>，技术方案里必须多写一节「数据模型」和「接口约定」。
+      不要不看结论就闷头照抄本页。
+    </div>
+
+    <div class="flow">
+      <div class="node"><b>2.1</b>你描述想法</div>
+      <div class="node"><b>2.2</b>AI 反问你 3 轮</div>
+      <div class="node"><b>2.3</b>落成需求文档</div>
+      <div class="node"><b>2.4</b>落成技术方案</div>
+      <div class="node"><b>2.5</b>生成 AGENTS.md</div>
+    </div>
+
+    <h3>2.1 第一句：先别写代码，先问我</h3>
+    <p>新手最容易犯的错，是把「我要一个记账工具」直接丢给 AI，然后它给你一个你不想要的东西。
+    正确做法是<b>强制它反问</b>：</p>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 需求澄清</span><button>复制</button></div>
+      <pre>我想做一个【家庭记账小工具】。
+
+先不要写任何代码。请你像产品经理一样，一次问我 3 个问题，帮我把需求问清楚。
+重点问清楚：
+1. 谁用、在什么场景下用
+2. 必须有哪 3 个功能，哪些可以以后再说
+3. 数据存在哪里、要不要多设备同步、要不要登录
+
+问完等我回答，再继续下一轮。总共不超过 3 轮。</pre>
+    </div>
+
+    <div class="callout tip">
+      <span class="tag">追问技巧</span>
+      当 AI 问你「要不要 X」而你也不确定时，回它：<b>「你给我两个方案，各说一句优缺点，然后推荐一个，并说明为什么适合我这种新手。」</b>
+      不要自己硬猜，让它帮你做技术决策，你只做「选哪个」的决策。
+    </div>
+
+    <h3>2.2 第二句：把结论写进文件，指定路径</h3>
+    <p>聊完之后，<b>必须让 AI 把结论落成文件</b>，并且明确告诉它路径。这是你后面所有窗口的「共同记忆」。</p>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 落文档</span><button>复制</button></div>
+      <pre>把我们刚才聊清楚的内容整理成两份文档，保存到下面这两个路径：
+
+1. docs/需求.md
+   - 项目一句话说明
+   - 目标用户和使用场景
+   - 功能清单：MVP 必做 / 以后再做 / 明确不做
+   - 每个功能的验收标准（怎么算做完了）
+
+2. docs/技术方案.md
+   - 技术栈及选择理由（我是新手，优先选简单、少依赖的方案）
+   - 目录结构说明
+   - 数据存在哪里、结构长什么样
+   - 已知的风险和取舍
+
+要求：用大白话写，不要堆术语。写完把两个文件的路径告诉我，先不要写业务代码。</pre>
+    </div>
+
+    <h3>2.3 第三句：生成 AGENTS.md</h3>
+    <p><code>AGENTS.md</code> 放在项目根目录，是 AI 每次打开窗口要<b>最先读</b>的文件。
+    它定义的是「在这个项目里，你必须怎么干活」，而不是「这个项目是什么」。</p>
+
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 生成 AGENTS.md</span><button>复制</button></div>
+      <pre>请在项目根目录创建 AGENTS.md，作为你在这个项目里的工作规则。必须包含：
+
+1. 项目简介（3 行以内）
+2. 技术栈 + 启动命令 + 构建命令 + 测试命令
+3. 目录结构说明（每个文件夹放什么）
+4. 代码规范：命名风格、注释用中文、是否用格式化工具
+5. 硬性规则（按这个措辞写）：
+   - 改动前先用 3 句话说明你要改什么、改哪些文件，等我确认
+   - 不要删除或重命名我没让你动的文件
+   - 不要擅自引入新依赖，需要时先说明理由并问我
+   - 每次改动后，列出「改了哪些文件 + 怎么验证」
+   - 遇到不确定的地方，停下来问我，不要猜
+6. 当前进度：已完成 / 进行中 / 待办
+
+写完后完整读一遍给我看，我确认后你再开始写代码。</pre>
+    </div>
+
+    <div class="callout warn">
+      <span class="tag">重要</span>
+      这一步是<b>人机对齐</b>，不是走形式。你要认真读一遍 AGENTS.md，改掉你不认同的地方。
+      这份文件以后每次开新窗口都会被读，写错一次，错很多次。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第3步 ============ -->
+  <section id="step3">
+    <div class="kicker">Step 3</div>
+    <h2><span class="num">3</span>开 Plan 模式：先出计划，再动手</h2>
+    <p class="sub">直接说「帮我实现」= 抽奖。先看计划 = 你能在它写代码之前就发现问题。</p>
+
+    <p>Plan（计划模式）的作用是：<b>让 AI 只思考、不动手</b>，先把任务拆成你能看懂的步骤给你审。
+    对新手来说，这一步的价值不在「计划多完美」，而在于你有机会说：</p>
+    <ul>
+      <li>「这个顺序不对，先做能跑起来的最小版本」</li>
+      <li>「这一步范围太大了，再拆细」</li>
+      <li>「这个方案太复杂了，用简单点的做法」</li>
+    </ul>
+
+    <h3>3.1 要计划的提示词</h3>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 进入计划模式</span><button>复制</button></div>
+      <pre>请先读取 AGENTS.md、docs/需求.md、docs/技术方案.md。
+
+然后进入计划模式，不要写任何代码，给我一份开发计划：
+- 拆成一个个小任务，每个任务控制在 30 分钟内能做完并验证
+- 每个任务写清楚：做什么、改哪些文件、怎么验证做对了
+- 标出依赖顺序，并指出「第一个能跑起来的最小版本（MVP）」到哪一步为止
+- 明确指出你认为有风险、不确定的地方
+
+计划写到 docs/开发计划.md，然后在这里贴一份给我确认。</pre>
+    </div>
+
+    <h3>3.2 确认计划时，重点看三件事</h3>
+    <div class="card">
+      <p><b>① 有没有「最小可运行版本」。</b>第一个里程碑应该是：能启动、能看到界面、能完成一个最核心的动作。
+      如果计划是「先写 8 个模块再一起跑」，打回去重拆。</p>
+      <p><b>② 验证方式是不是你能做的。</b>「运行单元测试」对小白不友好，
+      更好的是「打开浏览器，点新增，列表里出现一行」。</p>
+      <p><b>③ 任务之间有没有循环依赖。</b>如果 A 等 B、B 等 A，说明拆错了，让 AI 重排。</p>
+    </div>
+
+    <h3>3.3 开始开发</h3>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 开工</span><button>复制</button></div>
+      <pre>计划我确认了，按 docs/开发计划.md 开始实现。
+
+节奏要求：
+- 一次只做一个任务，做完停下来
+- 每个任务结束时告诉我：改了哪些文件、怎么验证、下一个任务是什么
+- 每完成一个里程碑，提醒我做一次 Git 提交
+- 卡住超过两轮就停下来告诉我卡在哪，不要自己反复试</pre>
+    </div>
+
+    <div class="callout">
+      <span class="tag">节奏感</span>
+      不要让它一口气写完整个项目。你每验收一个小任务，就等于给自己装了一道保险 ——
+      出问题时，你只需要回退一小步，而不是整个项目。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第4步 ============ -->
+  <section id="step4">
+    <div class="kicker">Step 4</div>
+    <h2><span class="num">4</span>自己动手跑一遍、点一遍</h2>
+    <p class="sub">AI 说「已完成」不等于「能用」。你必须亲自当一次用户。</p>
+
+    <p><b>为什么必须手动测？</b>因为 AI 的「完成」标准是「代码写完了」，
+    而你的标准是「我点这个按钮，它有没有反应」。这两件事之间，通常隔着三五个 bug。</p>
+
+    <h3>4.1 让 AI 把项目跑起来</h3>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 启动项目</span><button>复制</button></div>
+      <pre>请帮我把项目在本地启动起来，并且：
+1. 告诉我访问地址（比如 http://localhost:3000）
+2. 告诉我如果报错，应该看哪一行日志
+3. 先自己检查一遍启动过程有没有明显错误
+
+启动后不要关掉服务，我要在浏览器里手动测试。</pre>
+    </div>
+
+    <h3>4.2 让它给你一份「人话版」测试清单</h3>
+    <p>你自己想测试点容易漏，让它按真实用户的操作顺序列出来，你照着点：</p>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 测试清单</span><button>复制</button></div>
+      <pre>根据 docs/需求.md 里的验收标准，给我一份手动测试清单。
+
+要求：
+- 按真实用户的操作顺序排列（第一次打开 → 做核心动作 → 边界情况）
+- 每一步写：点什么、输入什么、期望看到什么
+- 单独列一节「边界和异常」：空输入、超长文字、重复提交、刷新页面后数据还在不在
+- 用编号列表，我要照着一条条打勾
+
+不要只列正常流程，异常情况才是 bug 高发区。</pre>
+    </div>
+
+    <div class="callout warn">
+      <span class="tag">测试时必做</span>
+      每发现一个问题，<b>立刻截图</b>，并在备忘录里记一行：我点了什么 → 期望什么 → 实际什么。
+      这些记录就是第 5 步的弹药。凭记忆描述 bug，是效率最低的做法。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第5步 ============ -->
+  <section id="step5">
+    <div class="kicker">Step 5</div>
+    <h2><span class="num">5</span>修问题：新窗口 + 现象 + 追问原因</h2>
+    <p class="sub">不要在原窗口里说「还是不行」，那通常只会换来第四版同样错误的修改。</p>
+
+    <h3>5.1 为什么必须新开窗口</h3>
+    <p>在旧窗口里，AI 已经被它自己前面那套错误思路「锚定」了，它会倾向于维护自己之前的判断。
+    新窗口 + 完整的现象描述 + 项目文档，等于给它一次重新推理的机会。</p>
+
+    <h3>5.2 报 bug 的四件套</h3>
+    <div class="card">
+      <p><b>① 现象</b>：我点了什么，发生了什么。<br>
+      <b>② 期望</b>：本来应该发生什么。<br>
+      <b>③ 复现步骤</b>：1、2、3，能重复出现。<br>
+      <b>④ 证据</b>：截图、浏览器控制台报错、终端日志。</p>
+      <p style="margin-bottom:0">四件套齐全，AI 一次就能定位；缺一件，你就要多聊五轮。</p>
+    </div>
+
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 报 Bug（新窗口第一句）</span><button>复制</button></div>
+      <pre>先读 AGENTS.md 和 docs/需求.md，了解这个项目。
+
+我遇到一个问题：
+
+【现象】在记账页面点「保存」后，页面闪一下，但列表里没有新增记录。
+【期望】保存成功，列表第一行出现刚才的记录，并提示「已保存」。
+【复现步骤】
+1. 打开 http://localhost:3000
+2. 输入金额 100，分类选「餐饮」
+3. 点「保存」
+4. 页面刷新，列表仍为空
+【证据】截图见附件；浏览器控制台报错：Uncaught TypeError: ...
+
+现在先不要改代码。
+请给我 3 个最可能的原因，按可能性从高到低排序，
+并告诉我每个原因要怎么验证才能确认是它。</pre>
+    </div>
+
+    <h3>5.3 关键动作：先要原因，再要方案</h3>
+    <p>新手最常做的是直接说「你帮我修一下」。这样你永远不知道问题出在哪，下次还会犯。
+    <b>先让它解释，再让它动手</b>，你顺便就学会了这个知识点。</p>
+
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 确认原因后修复</span><button>复制</button></div>
+      <pre>你说第 2 个原因最可能（数据没有写入 localStorage 就被页面刷新打断了），
+我认同。请按这个方案修改：
+
+1. 只改必要的文件，不要顺手重构其他代码
+2. 改之前先告诉我你要改哪几行、为什么这样改
+3. 改完后告诉我怎么验证修复成功
+4. 如果这次改完还有问题，说明判断错了，请如实告诉我，不要硬凑一个解释</pre>
+    </div>
+
+    <h3>5.4 还没解决？用「追问三连」</h3>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 追问一：为什么没修好</span><button>复制</button></div>
+      <pre>你上一版的修改没有解决问题，现象和之前完全一样。
+
+说明你之前的判断可能不对。请重新分析，不要重复同样的修改。
+请回答：
+1. 你上次的判断是什么？哪个证据和它矛盾？
+2. 你已经排除了哪些可能？依据是什么？
+3. 现在最可能的原因是什么？下一步怎么验证？</pre>
+    </div>
+
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 追问二：给我排查方案</span><button>复制</button></div>
+      <pre>我需要一个能自己执行的排查方案，而不是再猜一次。
+
+请给我：
+1. 在浏览器控制台输入什么命令，能看到什么结果
+2. 每个结果分别说明什么
+3. 根据结果，分别对应哪种修复方式
+4. 如果全部正常，那问题可能在哪个环节</pre>
+    </div>
+
+    <div class="callout danger">
+      <span class="tag">三轮法则</span>
+      同一个问题，AI 改了 <b>3 次</b>还没好，立刻停止。
+      两个选择：<b>①</b> 开新窗口，把「已试过的方案 + 全部报错」打包发过去，让它从零判断；
+      <b>②</b> 让它回到上一个 Git 提交，换一个实现思路重做。
+      无限重试是新手最耗时间的死循环。
+    </div>
+
+    <div class="callout tip">
+      <span class="tag">收尾动作</span>
+      修好之后，让 AI 把这行写进 <code>docs/问题记录.md</code>：
+      <b>现象 / 原因 / 修复方式 / 以后怎么避免</b>。
+      十次之后，这份文件就是你这个项目最值钱的东西。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 第6步 ============ -->
+  <section id="step6">
+    <div class="kicker">Step 6</div>
+    <h2><span class="num">6</span>加新功能：回头走一遍第 3 步</h2>
+    <p class="sub">新功能不是「在旧窗口里加一句」，而是一个缩小版的新项目。</p>
+
+    <div class="flow">
+      <div class="node"><b>6.1</b>新窗口</div>
+      <div class="node"><b>6.2</b>描述功能</div>
+      <div class="node"><b>6.3</b>AI 反问定边界</div>
+      <div class="node"><b>6.4</b>更新需求文档</div>
+      <div class="node loop"><b>6.5</b>回到第 3 步：Plan → 开发 → 测试</div>
+    </div>
+
+    <p><b>为什么新功能也要新窗口？</b>因为旧窗口里塞着上一个功能的全部实现细节，
+    AI 会不自觉地被这些细节带偏，把新功能写成旧功能的补丁。</p>
+
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 新功能（新窗口第一句）</span><button>复制</button></div>
+      <pre>先读 AGENTS.md、docs/需求.md、docs/技术方案.md，了解现有项目。
+
+我想新增一个功能：【按月统计支出，用柱状图显示】。
+
+先不要写代码，也不要直接给方案。请先问我问题，把这个功能问清楚：
+1. 这个功能解决什么场景下的什么问题
+2. 和现有功能怎么衔接（入口放哪、数据从哪来）
+3. 边界情况：没有数据时显示什么、月份怎么切换、数据量大时怎么办
+4. 有哪些是明确不做的
+
+一次问 3 个以内，问完等我回答。</pre>
+    </div>
+
+    <p>聊清楚之后：</p>
+    <div class="prompt">
+      <div class="bar"><span>复制发给 AI · 更新文档并出计划</span><button>复制</button></div>
+      <pre>请做三件事：
+1. 把新功能补充进 docs/需求.md（标明是新增，写清验收标准）
+2. 如果技术方案有变化，更新 docs/技术方案.md 并说明为什么
+3. 进入计划模式，给这个功能的开发计划（拆小任务 + 验证方式 + 风险）
+
+先不要动代码，等我确认计划。</pre>
+    </div>
+
+    <div class="callout">
+      <span class="tag">循环</span>
+      确认计划之后，就走第 3 步开发、第 4 步自测、第 5 步修 bug。
+      整个项目就是这样一轮一轮长大的：<b>定规则 → 计划 → 开发 → 测 → 修 → 加功能 → 回到计划</b>。
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 话术库 ============ -->
+  <section id="scripts">
+    <div class="kicker">Copy &amp; Paste</div>
+    <h2>万能话术库</h2>
+    <p class="sub">记不住流程没关系，记住这六句就够用了。</p>
+
+    <table>
+      <tr><th style="width:24%">场景</th><th>一句话话术</th></tr>
+      <tr><td>开工第一问</td><td>「这是我准备用的流程，这是我的项目情况。请评判哪步该删、哪步该加，至少各说一条。」</td></tr>
+      <tr><td>它说「都很好」</td><td>「太客气了。如果我只有两天，哪几步能砍？砍掉的代价是什么？」</td></tr>
+      <tr><td>开新窗口</td><td>「先读 AGENTS.md 和 docs/流程适配.md，再回答我。」</td></tr>
+      <tr><td>需求不清</td><td>「先别写代码，一次问我 3 个问题，帮我把需求问清楚。」</td></tr>
+      <tr><td>要开工</td><td>「进入计划模式，拆成 30 分钟能验证的小任务，先给我看计划。」</td></tr>
+      <tr><td>报 bug</td><td>「现象是…，期望是…，复现步骤是…，先别改，给我 3 个可能原因。」</td></tr>
+      <tr><td>没修好</td><td>「和上次现象一样，说明判断错了。列出你已排除的可能，重新分析。」</td></tr>
+      <tr><td>加功能</td><td>「新窗口，先读文档，然后问我问题把这个功能问清楚，再出计划。」</td></tr>
+      <tr><td>它乱改</td><td>「停。只改和这个问题相关的文件，其他不要动，改之前先告诉我改哪几行。」</td></tr>
+      <tr><td>它太啰嗦</td><td>「用大白话，三句话内说清，不要列一堆可能性。」</td></tr>
+    </table>
+
+    <div class="callout tip">
+      <span class="tag">通用加固句</span>
+      在任何指令后面加上这句，效果立竿见影：<br>
+      <b>「我是新手，请用大白话解释你在做什么。遇到不确定的地方停下来问我，不要猜。」</b>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 坑 ============ -->
+  <section id="fail">
+    <div class="kicker">Anti-patterns</div>
+    <h2>九个新手必踩的坑</h2>
+
+    <div class="fail">
+      <div class="item"><b>0. 不管什么项目都套全套流程</b><span>80 行的脚本也写三份文档，或者上线的系统也只靠「随手做」。→ 开工前先做 GATE 体检，让 AI 判断该加该减。</span></div>
+      <div class="item"><b>1. 一个窗口干到底</b><span>从需求聊到上线，几百轮对话。AI 开始忘记约定、反复改错。→ 一个任务一个窗口。</span></div>
+      <div class="item"><b>2. 不给路径，让 AI 自己找</b><span>它在错误的目录里工作，生成一堆找不到的文件。→ 每次明确写出绝对路径。</span></div>
+      <div class="item"><b>3. 需求一次全说完</b><span>「做一个带登录、支付、报表的系统」。AI 给你一个全都半成品的壳。→ 先做最小可用版本。</span></div>
+      <div class="item"><b>4. 相信「已完成」三个字</b><span>AI 说完成，你直接交付。→ 一定自己点一遍，按测试清单走。</span></div>
+      <div class="item"><b>5. 不提交 Git</b><span>改坏了无法回退，只能看着它越修越烂。→ 每完成一个功能就提交一次。</span></div>
+      <div class="item"><b>6. 报 bug 只说「还是不行」</b><span>AI 只能猜，你只能等。→ 现象 + 期望 + 步骤 + 截图，四件套。</span></div>
+      <div class="item"><b>7. 让它「顺手优化一下」</b><span>一个按钮的 bug，它重构了半个项目。→ 明确说「只改和这个问题相关的文件」。</span></div>
+      <div class="item"><b>8. 不写文档，靠对话记忆</b><span>窗口一关，全部归零。→ 需求、方案、计划、问题，全部落到 docs/。</span></div>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 清单 ============ -->
+  <section id="check">
+    <div class="kicker">Checklist</div>
+    <h2>每一步的验收标准</h2>
+
+    <h3>开始前</h3>
+    <ul class="check">
+      <li>项目文件夹建好了，路径是英文、无空格</li>
+      <li>Git 已初始化，有一次初始提交</li>
+      <li>只在当前项目目录里打开 AI 工具</li>
+    </ul>
+
+    <h3>关卡（SOP 体检）结束</h3>
+    <ul class="check">
+      <li><code>docs/流程适配.md</code> 已生成，里面有「项目画像 + 逐条判决 + 定制流程」</li>
+      <li>AI 至少指出了 1 处该删的和 1 处该加的</li>
+      <li>你能用一句话说清：这个项目属于 A 轻量 / B 常规 / C 复杂 / D 不该硬做</li>
+      <li>定制流程里的每一步，你都知道它产出哪个文件</li>
+    </ul>
+
+    <h3>第 2 步结束时</h3>
+    <ul class="check">
+      <li><code>docs/需求.md</code> 里有「明确不做」的清单</li>
+      <li><code>docs/技术方案.md</code> 里能看懂数据存在哪</li>
+      <li><code>AGENTS.md</code> 有启动命令和硬性规则</li>
+      <li>你亲自读过一遍 AGENTS.md，改掉了不认同的地方</li>
+    </ul>
+
+    <h3>第 3 步结束时</h3>
+    <ul class="check">
+      <li>计划里有明确的第一个可运行里程碑</li>
+      <li>每个任务的验证方式你都能亲手做</li>
+      <li>计划已保存到 <code>docs/开发计划.md</code></li>
+    </ul>
+
+    <h3>第 4 步结束时</h3>
+    <ul class="check">
+      <li>项目能在本地启动，地址能打开</li>
+      <li>核心流程手动走通一遍</li>
+      <li>空输入、超长输入、刷新页面都试过</li>
+      <li>发现的问题都截了图、记了现象</li>
+    </ul>
+
+    <h3>第 5、6 步</h3>
+    <ul class="check">
+      <li>bug 修完再走一遍原来的复现步骤，确认真的好了</li>
+      <li><code>docs/问题记录.md</code> 有这次的记录</li>
+      <li>修复后做了一次 Git 提交</li>
+      <li>新功能已补进需求文档，再进计划模式</li>
+    </ul>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ 附录 ============ -->
+  <section id="appendix">
+    <div class="kicker">Appendix</div>
+    <h2>附录：AGENTS.md 模板</h2>
+    <p class="sub">直接复制到项目根目录，把方括号里的内容换成你的实际情况。</p>
+
+    <div class="prompt">
+      <div class="bar"><span>AGENTS.md · 可复制模板</span><button>复制</button></div>
+      <pre># AGENTS.md — 本项目的 AI 工作规则
+
+## 1. 项目简介
+[一句话：这是一个给谁用的什么工具。]
+[当前阶段：MVP 开发中 / 功能迭代 / 维护。]
+
+## 2. 技术栈与命令
+- 技术栈：[例如 HTML + CSS + 原生 JS，无构建步骤]
+- 启动：`[命令]`，访问 `http://localhost:[端口]`
+- 构建：`[命令]`（没有就写「无」）
+- 测试：`[命令]`（没有就写「手动测试，见 docs/开发计划.md」）
+
+## 3. 目录结构
+- `src/`      业务代码
+- `docs/`     需求、技术方案、开发计划、问题记录
+- `assets/`   图片、字体等静态资源
+- 不要在项目根目录堆放临时文件
+
+## 4. 代码规范
+- 变量和函数用英文小驼峰，注释用中文
+- 单个文件不超过 [300] 行，超了就拆分并告诉我
+- 不写「显然」的注释；复杂逻辑必须写清「为什么这么做」
+- 保持现有代码风格，不要引入新的格式化工具
+
+## 5. 硬性规则（优先级最高）
+1. 改动前先用 3 句话说明：改什么、改哪些文件、为什么。等我确认后再动手。
+2. 不要删除、重命名、移动我没明确让你动的文件。
+3. 不要擅自安装依赖或引入新库。需要时先说明理由和替代方案，等我同意。
+4. 不要「顺手优化」无关代码。只改和当前任务相关的部分。
+5. 每次改动后，列出：改了哪些文件 + 怎么验证 + 可能的副作用。
+6. 不确定的地方停下来问我，不要猜；猜了要明确说「这是我的假设」。
+7. 不要声称「已完成」而不给验证方式。完成 = 代码写完 + 验证通过。
+
+## 6. 沟通方式
+- 我是新手，请用大白话，少用缩写和术语
+- 解释问题时先说结论，再说原因
+- 一次只做一件事，做完停下来等我确认
+
+## 7. 当前进度
+- 已完成：[...]
+- 进行中：[...]
+- 待办：[见 docs/开发计划.md]
+- 已知问题：[见 docs/问题记录.md]
+
+## 8. 每次新窗口的第一件事
+先读本文件和 `docs/需求.md`；如果存在 `docs/流程适配.md`，必须一起读，
+并以里面「定制流程」为准（它可能砍掉了或加强了某些环节）。
+然后用一句话复述「这个项目要做什么 + 我们约定的流程是什么」，
+等我确认后再开始工作。
+
+## 9. 流程自检
+当你发现以下情况时，主动提醒我重新做一次流程体检：
+- 项目规模明显变大（页面数/功能数翻倍，或开始要给别人用）
+- 要接入数据库、登录、外部 API、支付
+- 连续两个任务都反复返工
+- 你觉得当前流程里有某一步在我们这个项目上纯属走形式
+
+提醒时请直接说：「建议重新评估流程，因为……」，不要默默按旧流程硬做。</pre>
+    </div>
+
+    <div class="callout">
+      <span class="tag">维护</span>
+      <code>AGENTS.md</code> 不是一次写完就冻结的。每加一个大功能、每定一条新规矩，
+      就让它更新第 5 节和第 7 节。<b>它越准确，你越省心。</b>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- ============ Skill 驱动工作层 ============ -->
+  <section id="skill-layer">
+    <div class="kicker">Skill-driven operating layer</div>
+    <h2>保留小白基础，再用 Skill 把每一轮工作路由清楚</h2>
+    <p class="sub">前面的 0～6 步解决“怎么开始、怎么推进”；这一层解决“当前问题该交给哪个 skill、什么时候算完成”。两层一起用，不互相替代。</p>
+
+    <div class="card">
+      <h3 style="margin-top:0">先记住三条规则</h3>
+      <p><b>1. 不确定下一步时，先用 <code>project-workflow</code>。</b>它判断你是在梳理想法、评估流程、加功能、修 Bug，还是验收，避免多个 skill 同时抢同一个问题。</p>
+      <p><b>2. 目标、范围和验收条件不清，不写业务代码。</b>新想法先用 <code>brainstorm</code>，流程先用 <code>sop-feasibility-review</code>，现象不清先用 <code>qa</code>。</p>
+      <p style="margin-bottom:0"><b>3. 代码改完不等于事情完成。</b>每次开发都回到 <code>acceptance-check</code>，检查核心路径、失败路径、回归和剩余风险。</p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">最短记忆版</span>
+      <b><code>project-workflow</code> 决定现在做什么；专项 skill 负责把事情做好；<code>acceptance-check</code> 判断是否真的完成。</b>
+    </div>
+
+    <h3>按场景进入，不要一次加载全部 Skill</h3>
+    <table>
+      <tr><th style="width:24%">你现在遇到的事</th><th>建议路线</th><th>这一轮的出口</th></tr>
+      <tr><td>从 0 做系统</td><td><code>project-workflow</code> → <code>sop-feasibility-review</code> → <code>brainstorm</code> → <code>to-prd</code> → 专项开发</td><td><code>acceptance-check</code></td></tr>
+      <tr><td>新增或修改功能</td><td><code>project-workflow</code> → 读取项目规则和相关代码 → 按小任务实现</td><td><code>acceptance-check</code></td></tr>
+      <tr><td>系统出现 Bug</td><td><code>qa</code> 收集复现信息 → <code>app-diagnose</code> 定位根因</td><td>复现步骤和相关回归通过</td></tr>
+      <tr><td>调整 UI 或页面体验</td><td><code>impeccable</code> 明确方向 → <code>frontend-design</code> 实现 → <code>design-polish</code> 精修</td><td>窄屏、键盘、焦点、加载和空状态通过</td></tr>
+    </table>
+
+    <h3>完整开发闭环：四道门，八个动作</h3>
+    <div class="flow">
+      <div class="node"><b>动作 0</b>创建项目文件夹</div>
+      <div class="node loop"><b>门 0</b>目标与风险</div>
+      <div class="node loop"><b>门 1</b>流程与需求</div>
+      <div class="node"><b>动作 1</b>项目规则与上下文</div>
+      <div class="node"><b>动作 2</b>计划与实现</div>
+      <div class="node"><b>动作 3</b>手动和自动验证</div>
+      <div class="node loop"><b>门 4</b>验收与回归</div>
+      <div class="node"><b>循环</b>修复、复盘、再迭代</div>
+    </div>
+
+    <details>
+      <summary>门 0：先确认目标、责任和风险</summary>
+      <p>回答：谁使用？要解决什么问题？谁对最终结果负责？是否涉及支付、医疗、金融、身份、隐私、删除或代表用户对外操作？高风险场景必须保留人工确认、审计和恢复路径。</p>
+    </details>
+    <details>
+      <summary>门 1：把 SOP 和需求评估清楚</summary>
+      <p>流程型系统先用 <code>sop-feasibility-review</code>。它给出批准、条件批准、暂缓或不建议系统化的结论；结论为暂缓或不建议时，不要直接开发。</p>
+    </details>
+    <details>
+      <summary>动作 1：建立项目上下文</summary>
+      <p>读取真实的 <code>AGENTS.md</code>、README、docs、配置、源码和测试。没有 <code>AGENTS.md</code> 时使用 <code>agents-md-init</code>；不要凭空写启动命令或技术栈。</p>
+    </details>
+    <details>
+      <summary>动作 2：计划、实现、记录范围</summary>
+      <p>需求已确认后再实现。一次只处理一个明确变更，写清不改范围、影响模块、数据和验收标准。复杂任务先用 <code>zoom-out</code>，再决定是否需要架构或重构 skill。</p>
+    </details>
+    <details>
+      <summary>动作 3：按用户路径验证</summary>
+      <p>先走核心路径，再检查空输入、非法输入、重复提交、权限不足和外部依赖失败。UI 改动还要检查窄屏、键盘、焦点、加载和空状态。</p>
+    </details>
+    <details open>
+      <summary>门 4：acceptance-check 才是完成出口</summary>
+      <p>验收报告必须区分已验证、未通过、未验证和剩余风险。验收不通过就回到问题诊断，不把失败藏在“已完成”里。</p>
+    </details>
+
+    <div class="callout warn">
+      <span class="tag">高风险停止条件</span>
+      涉及支付、医疗、金融、身份、隐私、删除或代表用户对外操作时，必须保留人工确认、审计和恢复路径。核心路径失败、数据可能丢失或权限边界不清时，只能判为“不通过”。
+    </div>
+
+    <h3>Skill 目录：什么时候使用哪个</h3>
+    <table>
+      <tr><th>Skill</th><th>触发时机</th><th>负责什么</th><th>不会做什么</th></tr>
+      <tr><td><code>project-workflow</code></td><td>不知道下一步、从 0 开发、继续迭代</td><td>路由阶段、检查前置条件、安排验收</td><td>不代替专项实现</td></tr>
+      <tr><td><code>sop-feasibility-review</code></td><td>想把业务流程做成系统</td><td>判断自动化边界、依赖、风险和替代方案</td><td>不直接写业务代码</td></tr>
+      <tr><td><code>brainstorm</code></td><td>想法模糊、目标不清</td><td>一问一答确认用户、问题、范围和方案</td><td>未确认前不写代码</td></tr>
+      <tr><td><code>to-prd</code></td><td>范围已确认，需要产品文档</td><td>形成需求基线、用户故事和测试决策</td><td>不替代前置访谈</td></tr>
+      <tr><td><code>qa</code></td><td>Bug 或验收问题说不清</td><td>收集、拆分和结构化复现信息</td><td>不猜原因、不直接修复</td></tr>
+      <tr><td><code>app-diagnose</code></td><td>现象已经清楚，要定位 Bug</td><td>建立假设、读代码、验证根因、修复</td><td>不在信息不足时盲改</td></tr>
+      <tr><td><code>acceptance-check</code></td><td>功能或页面改完</td><td>按真实行为做验收、回归和风险报告</td><td>不把编译成功当完成</td></tr>
+      <tr><td><code>impeccable</code></td><td>新页面、设计系统、风格不明确</td><td>建立设计上下文和视觉方向</td><td>不负责已有页面整体修复</td></tr>
+      <tr><td><code>frontend-design</code></td><td>方向已确认，要实现前端</td><td>编写生产级页面、组件和交互</td><td>不替代设计方向访谈</td></tr>
+      <tr><td><code>design-polish</code></td><td>已有页面太普通、拥挤或不协调</td><td>精修排版、配色、响应式和动效</td><td>不重新定义业务范围</td></tr>
+      <tr><td><code>karpathy-guidelines</code></td><td>所有代码修改</td><td>限制猜测、过度重构和无关复杂度</td><td>不替代验收</td></tr>
+      <tr><td>技术专项</td><td>数据库、React Hooks、antd Table、多语言等出现时</td><td>提供局部实现规范</td><td>不应默认全部加载</td></tr>
+    </table>
+
+    <h3>非技术用户可直接复制的话术</h3>
+    <div class="prompt">
+      <div class="bar"><span>开工第一句 · 先路由</span><button>复制</button></div>
+      <pre>请先使用 project-workflow 判断我当前处于哪个开发阶段。
+我的目标是：[一句话描述]
+当前情况是：[新项目 / 已有系统 / Bug / UI 调整]
+请用大白话告诉我：当前阶段、下一步应该使用哪个 skill、需要我确认什么、这一轮会产出什么。先不要写代码。</pre>
+    </div>
+    <div class="prompt">
+      <div class="bar"><span>新项目 · 先梳理再开发</span><button>复制</button></div>
+      <pre>我想把下面这套业务流程做成系统：[粘贴流程]
+请先使用 sop-feasibility-review，判断哪些步骤可以系统化、哪些必须人工、有哪些外部依赖和风险。
+如果结论不是“批准系统化”，请明确告诉我先做什么，不要直接写代码。
+结论确认后，再用 brainstorm 帮我把用户、核心问题、范围和验收标准问清楚。</pre>
+    </div>
+    <div class="prompt">
+      <div class="bar"><span>新增功能 · 控制范围</span><button>复制</button></div>
+      <pre>我要给现有系统增加这个功能：[功能描述]
+请先读取项目规则、相关代码和已有文档，再列出：现状、目标行为、影响范围、明确不改的内容、实现步骤、验收条件和风险。
+没有确认范围前不要改代码；确认后按最小可验证任务逐步实现。</pre>
+    </div>
+    <div class="prompt">
+      <div class="bar"><span>Bug · 先定位再修复</span><button>复制</button></div>
+      <pre>我遇到的问题是：[页面 + 操作 + 期望 + 实际 + 发生频率]
+请先判断信息是否足够。如果不够，使用 qa 只问必要的问题；如果已经足够，使用 app-diagnose 列出可能原因并逐个验证。
+请先告诉我根因和证据，再提出最小修复。修复后用 acceptance-check 验证复现步骤和相关回归。</pre>
+    </div>
+    <div class="prompt">
+      <div class="bar"><span>完成后 · 验收出口</span><button>复制</button></div>
+      <pre>请使用 acceptance-check 验收刚才的改动。
+请按真实用户操作检查核心路径、失败路径、权限/数据影响和已有行为回归，并运行项目中已经存在的最小相关命令。
+输出：通过 / 有条件通过 / 不通过；已验证；未通过或阻塞；未验证；剩余风险；下一步。</pre>
+    </div>
+
+    <h3>每一轮开发的完成标准</h3>
+    <ul class="check">
+      <li>我能用一句话说清这轮要解决的问题，以及谁会使用它。</li>
+      <li>我知道这轮明确不做什么，没有把未来想法混进当前范围。</li>
+      <li>如果是流程型系统，我已经看过自动化边界、人工责任、外部依赖和风险。</li>
+      <li>AI 已经读取了真实项目规则、相关代码、配置和测试，而不是凭空猜测。</li>
+      <li>改动按小任务完成，每个任务都有可观察的结果。</li>
+      <li>核心路径已按真实用户操作走通，失败路径至少检查了一项。</li>
+      <li>验收报告区分了已验证、未验证和剩余风险，没有把模拟能力写成生产能力。</li>
+      <li>如果不通过，我已经得到可复现的问题描述，并回到 <code>qa</code> 或 <code>app-diagnose</code>。</li>
+    </ul>
+
+    <h3>建议保留的项目产物</h3>
+    <table>
+      <tr><th>文件</th><th>作用</th><th>由哪个阶段维护</th></tr>
+      <tr><td><code>docs/流程适配.md</code></td><td>记录这套 SOP 对当前项目删掉、保留和新增了什么</td><td><code>sop-feasibility-review</code></td></tr>
+      <tr><td><code>docs/需求.md</code> 或 PRD</td><td>记录目标用户、范围、用户流程、明确不做和验收标准</td><td><code>brainstorm</code> / <code>to-prd</code></td></tr>
+      <tr><td><code>docs/开发计划.md</code></td><td>记录当前变更的小任务、风险和验证方式</td><td><code>project-workflow</code> 和实现阶段</td></tr>
+      <tr><td><code>docs/验收报告.md</code></td><td>记录通过项、阻塞项、未验证项和剩余风险</td><td><code>acceptance-check</code></td></tr>
+      <tr><td><code>docs/问题记录.md</code></td><td>记录可复现问题、根因、修复和回归结果</td><td><code>qa</code> / <code>app-diagnose</code></td></tr>
+    </table>
+
+    <div class="callout danger">
+      <span class="tag">停止条件</span>
+      连续两次修改都没有解决问题、改动开始影响无关模块、数据或权限边界不清、或外部接口不可用时，停下来重新评估范围和流程，不要继续沿着同一方向加代码。
+    </div>
+  </section>
+
+  <footer>
+    <p>核心循环：<b>流程体检 → 建文件夹 → 定规则 → 计划 → 开发 → 自测 → 修 → 加功能 → 回到计划</b></p>
+    <p>通用 SOP 是默认值，不是标准答案。每开一个新项目，先花十分钟让它变成「这个项目专用版」。</p>
+    <p>一套流程走三遍，你就不再是小白了。真正的门槛从来不是写代码，而是把需求说清楚、把问题描述准。</p>
+  </footer>
+
+</div>
+
+<script>
+document.querySelectorAll('.prompt button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var pre = btn.closest('.prompt').querySelector('pre');
+    var text = pre.innerText;
+    var done = function(){
+      var old = btn.textContent;
+      btn.textContent = '已复制';
+      setTimeout(function(){ btn.textContent = old; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) {}
+      document.body.removeChild(ta);
+    }
+  });
+});
+</script>
+</body>
+</html>
