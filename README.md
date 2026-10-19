@@ -42,6 +42,17 @@
 
     请从 https://github.com/usertianziyang/ai-development-sop 安装 ai-development-sop 插件，固定使用 main 版本；先读取 plugin.json 和 README.md，安装到当前 Codex 项目，不要修改业务代码，安装后列出已发现的 SKILL.md。
 
+### 国内镜像（Gitee）
+
+本项目同步发布到 Gitee：
+
+    https://gitee.com/tzy_yzt/ai-development-sop
+
+国内用户也可以直接从 Gitee 添加 marketplace 并安装：
+
+    codex plugin marketplace add https://gitee.com/tzy_yzt/ai-development-sop.git --ref main
+    codex plugin add ai-development-sop --marketplace ai-development-sop-marketplace
+
 ### 单独打包某个 skill
 
     python3 skill-creator/scripts/package_skill.py plugins/ai-development-sop/skills/project-workflow dist
@@ -52,6 +63,10 @@
 - plugins/ai-development-sop/skills/：面向用户运行的 skill。
 - .agents/plugins/marketplace.json：公开 marketplace 清单。
 - skill-creator/：维护和打包工具，不作为普通用户运行 skill 默认安装。
+
+## 许可证
+
+本项目采用 MIT License，详见根目录 [LICENSE](./LICENSE)。
 
 ## Skill 功能清单
 
