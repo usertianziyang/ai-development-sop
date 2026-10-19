@@ -18,7 +18,7 @@
     项目根目录/
     ├── .agents/plugins/marketplace.json
     ├── plugins/ai-development-sop/
-    │   ├── plugin.json
+    │   ├── .codex-plugin/plugin.json
     │   └── skills/<skill-name>/SKILL.md
     ├── skill-creator/
     ├── AI开发SOP-新版.html
@@ -48,7 +48,7 @@
 
 ## 发布结构
 
-- plugin.json：插件元数据和版本。
+- .codex-plugin/plugin.json：插件元数据和版本。
 - plugins/ai-development-sop/skills/：面向用户运行的 skill。
 - .agents/plugins/marketplace.json：公开 marketplace 清单。
 - skill-creator/：维护和打包工具，不作为普通用户运行 skill 默认安装。

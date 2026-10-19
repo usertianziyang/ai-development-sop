@@ -3,6 +3,7 @@
   "name": "ai-development-sop",
   "version": "1.0.0",
   "description": "面向非技术用户的 AI 系统开发流程：从 SOP 梳理、需求确认到功能实现、Bug 修复、UI 调整和验收迭代。",
+  "skills": "./skills/",
   "author": {
     "name": "usertianziyang"
   },
